@@ -59,7 +59,7 @@ int my_strcpy_safe(char *dst, size_t dstsize, const char *src) {
      * bytes INCLUDING the terminator. On success return 1.
      * If src does not fit, leave dst a valid empty string and
      * return 0. Think about dstsize == 0 before you write. */
-   size_t length = my_strlen(s);	
+   size_t length = my_strlen(src);	
     if(dstsize == 0){return 0;}
     if(dstsize >=  length+1){
     for(size_t i=0; i< length+1; i++){

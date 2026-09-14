@@ -32,12 +32,16 @@ int main(void) {
      * Circle in your output where the address changed (or did not) and
      * connect it to your WRITEUP's realloc-vs-manual answer.
      */
-	const IntArray *a;
-	ia_init(a);
+	IntArray a;
+	ia_init(&a);
 	for(int i=0; i<50; i++){
-		printf("push %2d: size=%2zu cap=%2zu data=%p\n", i, ia_size(a),ia_capacity(a) (void *) a->data);	
+		if(ia_push_back(&a,i) == 0){
+			printf("push back error");
+			break;
+		}
+		printf("push %2d: size=%2zu cap=%2zu data=%p\n", i, ia_size(&a),ia_capacity(&a),(void *) a.data);	
 	}
-
+	ia_destroy(&a);
 
     /* ---- 2. Names: the two-level ownership -----------------------------
      * TODO: build an array of my_strdup'd names (a char** you malloc, or a
@@ -52,7 +56,7 @@ int main(void) {
 	if(ptrArray == NULL){
 		return 1;
 	}
-	for(int i=0;, i< numNames; i++){
+	for(int i=0; i< numNames; i++){
 	*(ptrArray+i) = my_strdup(names[i]);
 	if(*(ptrArray+i) == NULL){
 		return 1;
@@ -61,18 +65,19 @@ int main(void) {
 
 	//Sorting names with my_strcmp
 	for(int i=1; i< numNames; i++){
-	int temp = (*ptrArray+i);
+	char* temp = *(ptrArray+i);
 	int j = i;
-	while( j>0 && my_strcmp(*ptrArray+(j-1),temp) > 0){
-		*ptrArray+j = *ptrArray+(j-1)
+	while( j>0 && my_strcmp(*(ptrArray+(j-1)),temp) > 0){
+		*(ptrArray+j) = *(ptrArray+(j-1));
 		j--;
 	}
-	*ptrArray+j = temp;
+	*(ptrArray+j) = temp;
 	}
 	printf("Sorted Names:");
 	for(int i=0; i<numNames; i++){
-	printf("%s, ", *ptrArray+i);
+	printf("%s, ", *(ptrArray+i));
 	}
+	printf("\n");
 
 	//Free every String AND the array of pointers
 	for(int i=0; i<numNames; i++){
@@ -88,30 +93,30 @@ int main(void) {
      *   - ia_destroy called twice                (expect: no crash)
      *   - my_strcpy_safe into a too-small buffer (expect return 0, dst "")
      */
-
+	IntArray b;
+	ia_init(&b);
 	//ia_pop_back TEST
-	int *out;
-	ia_clear(a);
-	int result = ia_pop_back(a,out);
-	printf("ia_pop_back on empty array Result: %d", result);
+	int out;
+	int result = ia_pop_back(&b,&out);
+	printf("ia_pop_back on empty array Result: %d\n", result);
 
 	//ia_get / ia_set TEST
 	size_t index = 1000;
-	ia_init(a);
-	ia_push_back(a,10);
-	int getTest = ia_get(a,index);
-	int setTest = ia_set(a,index,67);
-	printf("get/set Test Results: get-%d set-%d", getTest, setTest);
+	ia_init(&b);
+	ia_push_back(&b,10);
+	int getTest = ia_get(&b,index);
+	int setTest = ia_set(&b,index,67);
+	printf("get/set Test Results: get-%d set-%d\n", getTest, setTest);
 
 	//ia_destroy twice
-	ia_destroy(a);
-	ia_destroy(a);
+	ia_destroy(&b);
+	ia_destroy(&b);
 
 	//strcpy_safe Test
 	char buffer[5];
-	char string[7] = "Testing";
-	int safeTest = my_strcpy_safe(buffer, sizeof(buffer), string[0]);
-	printf("strcpy_safe Results: return - %d, dst - %s",safeTest, string );
+	char string[8] = "Testing";
+	int safeTest = my_strcpy_safe(buffer, sizeof(buffer), string);
+	printf("strcpy_safe Results: return - %d, dst - %s\n",safeTest, buffer );
     printf("lab1 driver: TODO\n");
     return 0;
 }

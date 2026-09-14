@@ -33,11 +33,9 @@ static int ia_grow(IntArray *a, size_t newcap) {
      *   a->data = (int *)realloc(a->data, ...);
      * leaks the old block if realloc fails. Assign to a temporary,
      * check it, THEN commit. Your WRITEUP explains why. */
-    //(void)a;
-    //(void)newcap;
     int *temp  = (int*)realloc(a->data, newcap * sizeof(int));
-    if (temp = NULL ) {
-	return 0;	    
+    if (temp == NULL ) {
+	    return 0;	    
     }
     a->data = temp;
     a->cap = newcap;
@@ -46,8 +44,6 @@ static int ia_grow(IntArray *a, size_t newcap) {
     /* TODO, Version 1: malloc a bigger buffer, copy a->size
      * elements over, free the old buffer, commit pointer and cap.
      * On malloc failure: return 0 with the old array intact. */
-    //(void)a;
-    //(void)newcap;
     int *temp2 = (int*)malloc(newcap*sizeof(int));
     if(temp2 == NULL){return0;}
     for(size_t i=0; i < a->size; i++){
@@ -62,7 +58,6 @@ static int ia_grow(IntArray *a, size_t newcap) {
 
 void ia_init(IntArray *a) {
     /* TODO */
-    //(void)a;
     a->size = 0;
     a->cap = 0;
     a->data = NULL;
@@ -73,7 +68,6 @@ int ia_push_back(IntArray *a, int v) {
      * when size == cap, grow to 2 * cap; then store v.
      * (The ia_grow(a, 0) below only silences the unused-function
      * warning while ia_grow is a stub -- replace it with real calls.) */
-    //(void)v;
     size_t newcap;
     if(a->size == a->cap){
 	if(a->cap == 0){
@@ -81,8 +75,9 @@ int ia_push_back(IntArray *a, int v) {
 	}else{
 	 newcap = a->cap * 2;
 	}
-	if(ia_grow(a,newcap) == 0;){
-	 return 0
+	int growResult = ia_grow(a,newcap);
+	if(growResult == 0){
+	 return 0;
 	}
     }
     *(a->data + a->size) = v;
@@ -102,7 +97,7 @@ int ia_set(IntArray *a, size_t i, int v) {
     /* TODO: 1 ok, 0 if i out of range. */
     if(i < a->size){
 	*(a->data + i) = v;
-	return 1
+	return 1;
     }
     return 0;
 }
