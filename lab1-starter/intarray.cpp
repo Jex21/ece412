@@ -4,10 +4,10 @@
  * Description: ECE 412 Lab 1, Part B -- IntArray: a growable array
  *              built from malloc/realloc/free. This is what
  *              std::vector does under the hood.
- * Created:     TODO
- * EID:         TODO
- * Email:       TODO
- * Author:      TODO
+ * Created:     09/12/2026
+ * EID:         jrp5528
+ * Email:       jrp5528@my.utexas.edu
+ * Author:      Jericho Perez
  * Provenance:  I certify that all code contained herein is mine
  *              alone except where otherwise noted.
  * ================================================================
@@ -33,22 +33,39 @@ static int ia_grow(IntArray *a, size_t newcap) {
      *   a->data = (int *)realloc(a->data, ...);
      * leaks the old block if realloc fails. Assign to a temporary,
      * check it, THEN commit. Your WRITEUP explains why. */
-    (void)a;
-    (void)newcap;
-    return 0;
+    //(void)a;
+    //(void)newcap;
+    int *temp  = (int*)realloc(a->data, newcap * sizeof(int));
+    if (temp = NULL ) {
+	return 0;	    
+    }
+    a->data = temp;
+    a->cap = newcap;
+    return 1;
 #else
     /* TODO, Version 1: malloc a bigger buffer, copy a->size
      * elements over, free the old buffer, commit pointer and cap.
      * On malloc failure: return 0 with the old array intact. */
-    (void)a;
-    (void)newcap;
-    return 0;
+    //(void)a;
+    //(void)newcap;
+    int *temp2 = (int*)malloc(newcap*sizeof(int));
+    if(temp2 == NULL){return0;}
+    for(size_t i=0; i < a->size; i++){
+	*(temp2+i) = *(a->data+i);
+    }
+    free(a->data);
+    a->data = temp2;
+    a->cap = newcap;
+    return 1;
 #endif
 }
 
 void ia_init(IntArray *a) {
     /* TODO */
-    (void)a;
+    //(void)a;
+    a->size = 0;
+    a->cap = 0;
+    a->data = NULL;
 }
 
 int ia_push_back(IntArray *a, int v) {
@@ -56,53 +73,71 @@ int ia_push_back(IntArray *a, int v) {
      * when size == cap, grow to 2 * cap; then store v.
      * (The ia_grow(a, 0) below only silences the unused-function
      * warning while ia_grow is a stub -- replace it with real calls.) */
-    (void)v;
-    return ia_grow(a, 0);
+    //(void)v;
+    size_t newcap;
+    if(a->size == a->cap){
+	if(a->cap == 0){
+	 newcap = 4;
+	}else{
+	 newcap = a->cap * 2;
+	}
+	if(ia_grow(a,newcap) == 0;){
+	 return 0
+	}
+    }
+    *(a->data + a->size) = v;
+    a->size++;
+    return 1;
 }
 
 int ia_get(const IntArray *a, size_t i) {
     /* Precondition: i < a->size. TODO */
-    (void)a;
-    (void)i;
-    return 0;
+    return *(a->data+i);
 }
 
 int ia_set(IntArray *a, size_t i, int v) {
     /* TODO: 1 ok, 0 if i out of range. */
-    (void)a;
-    (void)i;
-    (void)v;
+    if(i < a->size){
+	*(a->data + i) = v;
+	return 1
+    }
     return 0;
 }
 
 int ia_pop_back(IntArray *a, int *out) {
     /* TODO: 1 ok (value via *out), 0 if empty. */
-    (void)a;
-    (void)out;
-    return 0;
+    if(a->size ==0){
+	return 0;	    
+    }
+    a->size--;
+    if(out != NULL){
+	    *out = *(a->data + a->size);
+    }
+    return 1;
 }
 
 size_t ia_size(const IntArray *a) {
     /* TODO */
-    (void)a;
-    return 0;
+    return a->size;
 }
 
 size_t ia_capacity(const IntArray *a) {
     /* TODO */
-    (void)a;
-    return 0;
+    return a->cap;
 }
 
 void ia_clear(IntArray *a) {
     /* TODO: size = 0, KEEP the buffer. (How does this differ
      * from ia_destroy? One sentence in your WRITEUP.) */
-    (void)a;
+    a->size = 0;
 }
 
 void ia_destroy(IntArray *a) {
     /* TODO: free the buffer, then null/zero every field so a
      * second ia_destroy is harmless. That nulling is not
      * politeness -- it is the whole defense against double free. */
-    (void)a;
+    free(a->data);
+    a->data = NULL;
+    a->size = 0;
+    a->cap = 0;
 }
