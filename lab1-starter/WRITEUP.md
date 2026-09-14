@@ -55,7 +55,7 @@ my_strdup allocates my_strlen(s) +1 because it is including the string's null te
 ## W7. Unsigned comparison
 
 Why must `my_strcmp` compare as `unsigned char`? Give the concrete example from the handout (`"\xFF"` vs `"a"`) and say what plain signed `char` gets wrong on the ECE Linux server machines. 
-my_strcmp uses unsigned char to compare char's because with higher values, such as "\xFF", the value may be interpreted as a negative number rather than a large number. That means when you compare two char's, the returned value may be wrong. For example, in signed char, \xFF is -1 and "a" is 65, so it would return a negative number saying that the char 0xFF comes before "a" lexicographically when in reality 0xFF comes after "a" lexicographically which can be seen when using unsigned char where 0xFF is 255 and "a" is 65 and since we can see 255 > 65, we get the correct answer that 0xFF comes after "a"/
+my_strcmp uses unsigned char to compare char's because with higher values, such as "\xFF", the value may be interpreted as a negative number rather than a large number since plain char is interpreted as signed char on the ECE linux server machines. That means when you compare two char's, the returned value may be wrong. For example, in signed char, \xFF is -1 and "a" is 65, so it would return a negative number saying that the char 0xFF comes before "a" lexicographically when in reality 0xFF comes after "a" lexicographically which can be seen when using unsigned char where 0xFF is 255 and "a" is 65 and since we can see 255 > 65, we get the correct answer that 0xFF comes after "a"/
 
 ## W8. The valgrind summary (paste)
 
