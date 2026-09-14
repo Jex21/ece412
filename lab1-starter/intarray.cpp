@@ -45,7 +45,7 @@ static int ia_grow(IntArray *a, size_t newcap) {
      * elements over, free the old buffer, commit pointer and cap.
      * On malloc failure: return 0 with the old array intact. */
     int *temp2 = (int*)malloc(newcap*sizeof(int));
-    if(temp2 == NULL){return0;}
+    if(temp2 == NULL){return 0;}
     for(size_t i=0; i < a->size; i++){
 	*(temp2+i) = *(a->data+i);
     }
