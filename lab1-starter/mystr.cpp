@@ -37,7 +37,6 @@ char *my_strdup(const char *s) {
    for(size_t i =0;i<my_strlen(s)+1;i++){
 	*(ptr+i)= *(s+i);
    }
-   free(ptr);
     return ptr;
 }
 

@@ -32,7 +32,12 @@ int main(void) {
      * Circle in your output where the address changed (or did not) and
      * connect it to your WRITEUP's realloc-vs-manual answer.
      */
-	
+	IntArray a;
+	ia_init(&a);
+	for(int i=0; i<50; i++){
+		printf("push %2d: size=%2zu cap=%2zu data=%p\n", i, ia_size(&a), (void *) a.data);	
+	}
+
 
     /* ---- 2. Names: the two-level ownership -----------------------------
      * TODO: build an array of my_strdup'd names (a char** you malloc, or a
@@ -40,7 +45,9 @@ int main(void) {
      * sort is fine), print the sorted names -- then free EVERY string AND
      * (if malloc'd) the array of pointers. Two levels, two kinds of free.
      */
-
+	size_t numNames = 8;
+	const char *names[numNames] = { "Lili", "Jin", "Kazuya", "Lidia", "King", "Lee", "Bryan", "Asuka"};
+	char **ptr = my_strdup(**names
     /* ---- 3. Failure paths ----------------------------------------------
      * TODO, each printed so the grader can see it happened:
      *   - ia_pop_back on an empty array          (expect return 0)
