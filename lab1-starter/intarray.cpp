@@ -92,7 +92,10 @@ int ia_push_back(IntArray *a, int v) {
 
 int ia_get(const IntArray *a, size_t i) {
     /* Precondition: i < a->size. TODO */
+    if(i < a->size){
     return *(a->data+i);
+    }
+    return 0;
 }
 
 int ia_set(IntArray *a, size_t i, int v) {
